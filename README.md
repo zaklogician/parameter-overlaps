@@ -1,2 +1,1 @@
-# parameter-overlaps
-Parameterized free monoid overlap
+# Scala Overlaps algorithm
