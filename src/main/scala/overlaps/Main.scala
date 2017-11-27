@@ -112,7 +112,7 @@ object Main {
        }
        case (Nil, _) => resAcc
        case (_, Nil) => overlap(
-              infoAcc.map(_._1).tail ++ lhs,
+              (infoAcc.map(_._1) ++ lhs).tail,
               infoAcc.map(_._2) ++ rhs,
               List(), List()
             )

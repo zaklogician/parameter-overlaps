@@ -34,7 +34,7 @@ object LinProps extends Properties("Lin") {
     aL.mul <= bL.mul || (aL dominates bL)
   }
 
-  property("mul == that.mul means larger _.add dominates") = Prop.forAll { (a: Int, b: Int, c: Int) =>
+  property("mul == that.mul them larger _.add dominates") = Prop.forAll { (a: Int, b: Int, c: Int) =>
     val aL = Lin(a,b)
     val bL = Lin(a,c)
     b <= c || (aL dominates bL)
@@ -122,7 +122,8 @@ object Util extends Properties("Util") {
   implicit val arbcharExp = Arbitrary(overlaps.CharExpProps.charExps)
   
 
-  property("overlap invariant with replace") = Prop.forAll { (a: CharExp, b: CharExp, c: CharExp, d: CharExp, e: CharExp, f: CharExp) =>
+  property("overlap invariant with replace") = Prop.forAll {
+    (a: CharExp, b: CharExp, c: CharExp, d: CharExp, e: CharExp, f: CharExp) =>
     val ns = List(a,b,c)
     val ms = List(d,e,f)
     val fc = CharExp('*', Lin(1,0))
@@ -131,6 +132,12 @@ object Util extends Properties("Util") {
       case (y :: ys) => xs.map( c => if (c == y) fc else c)
     }
     replace( ovlap(ns,ms) ) == ovlap( replace(ns), replace(ms) )
+  }
+
+  property("overlap quasi-invariant with translation") = Prop.forAll {
+    (xs: List[CharExp], ys: List[CharExp], zs: List[CharExp]) =>
+    val ov = ovlap(xs,ys)
+    ov == xs || ov == ys || ov == ovlap(zs ++ xs, ys ++ zs)
   }
 
   property("overlap test cases") = Prop {
@@ -145,4 +152,5 @@ object Util extends Properties("Util") {
     ovlap( List(x2,y) , List(x2) ) == List()           &&
     true
   }
+
 }
